@@ -1,5 +1,6 @@
 require([
     './runner',
+    './tree',
     './codemirror/codemirror',
     './codemirror/javascript',
     './zepto'

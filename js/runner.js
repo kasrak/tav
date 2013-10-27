@@ -1,4 +1,5 @@
 define(function(require, exports) {
+    /*jshint evil:true */
     var _ = require('lodash');
     var acorn = require('acorn');
     require('escodegen.browser');
