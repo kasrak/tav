@@ -2,7 +2,8 @@ define(function(require, exports) {
     /*jshint evil:true */
     var _ = require('lodash');
     var acorn = require('acorn');
-    require('escodegen.browser');
+    var drawtree = require('drawtree');
+    require('escodegen.browser'); // escodegen adds itself to global scope
     var escodegen = window.escodegen;
     var escope = require('escope');
     var estraverse = require('estraverse');
@@ -44,7 +45,7 @@ define(function(require, exports) {
     ]);
     // TODO special case: loops and conditionals (trace check)
 
-    exports.run = function(code) {
+    exports.run = function(code, onfinish) {
         // TODO break up this function
 
         var ast = acorn.parse(code, { locations: true });
@@ -60,16 +61,14 @@ define(function(require, exports) {
                     scopeNodes.push(node);
                 }
 
-                if (controlTypes.contains(node.type)) {
+                if (controlTypes.contains(node.type) && _.isArray(parent.body)) {
                     // get names of variables in current scope
                     curScope = _.pluck(scope.acquire(_.last(scopeNodes)).variables, 'name');
 
                     // add trace call
                     nodeIdx = parent.body.indexOf(node); // xxx perf
-                    parent.body.splice(nodeIdx,
-                                       0,
-                                       generateTraceNode(node.loc.start.line,
-                                                         curScope));
+                    parent.body.splice(nodeIdx, 0,
+                        generateTraceNode(node.loc.start.line, curScope));
                 }
             },
             leave: function(node, parent) {
@@ -84,5 +83,6 @@ define(function(require, exports) {
         window.__tav_steps = [];
         console.log(generatedCode);
         eval(generatedCode);
+        if (onfinish) onfinish(window.__tav_steps);
     };
 });

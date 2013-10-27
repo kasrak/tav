@@ -8,6 +8,7 @@ body {
 .toolbar {
   padding: 5px;
   background: #222;
+  color: #eee;
   height: 37px;
 }
 .toolbar button {
@@ -17,6 +18,10 @@ body {
   cursor: pointer;
   font: inherit;
   outline: 0;
+  width: 70px;
+}
+.toolbar .step-label {
+  padding: 0 5px;
 }
 .editor-container {
   position: absolute;
@@ -27,6 +32,9 @@ body {
 }
 .editor-container .CodeMirror {
   height: 100%;
+}
+.CodeMirror .current-step {
+  background: yellow;
 }
 .tree-container {
   position: absolute;

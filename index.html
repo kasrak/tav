@@ -9,7 +9,21 @@
     </head>
     <body>
         <div class="toolbar">
-            <button id="run-button">Run</button>
+            <button id="run-button" data-bind="click: run">
+                Run
+            </button>
+            <span data-bind="visible: didRun">
+                <button id="step-button" data-bind="click: stepPrev">
+                    Prev
+                </button>
+                <button id="step-button" data-bind="click: stepNext">
+                    Next
+                </button>
+                <span class="step-label">
+                    Step <span data-bind="text: curStep"></span>
+                    of <span data-bind="text: numSteps"></span>
+                </span>
+            </span>
         </div>
 
         <div class="editor-container">

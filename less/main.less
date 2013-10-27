@@ -12,6 +12,7 @@ body {
 .toolbar {
     padding: @toolbar_padding;
     background: #222;
+    color: #eee;
     height: @toolbar_height;
 
     button {
@@ -21,6 +22,11 @@ body {
         cursor: pointer;
         font: inherit;
         outline: 0;
+        width: 70px;
+    }
+
+    .step-label {
+        padding: 0 5px;
     }
 }
 
@@ -33,6 +39,12 @@ body {
 
     .CodeMirror {
         height: 100%;
+    }
+}
+
+.CodeMirror {
+    .current-step {
+        background: yellow;
     }
 }
 
