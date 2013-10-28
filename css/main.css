@@ -5,6 +5,18 @@ body {
   font: 14pt/17pt Helvetica, Arial, sans-serif;
   box-sizing: border-box;
 }
+.loading {
+  position: absolute;
+  background: #eee;
+  padding: 40px;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #555;
+  z-index: 999;
+}
 .toolbar {
   padding: 5px;
   background: #222;

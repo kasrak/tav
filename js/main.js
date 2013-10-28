@@ -104,5 +104,7 @@ require([
 
         editor.focus();
 
+        $('.loading').hide();
+
     });
 });

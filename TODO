@@ -11,4 +11,3 @@
 - some sort of console to print messages to
 - minify+combine js files for the live site
 - show current call stack when stepping
-- some sort of loading indicator on page load
