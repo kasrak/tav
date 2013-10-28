@@ -1,11 +1,12 @@
 require([
     './runner',
-    './knockout',
+    './drawtree',
     './tree',
+    './knockout',
     './codemirror/codemirror',
     './codemirror/javascript',
     './zepto'
-], function(runner, ko) {
+], function(runner, draw, tree, ko) {
     var editor;
     var view = {};
     var steps;
@@ -14,7 +15,7 @@ require([
 
     view.curStep = ko.observable(-1);
     view.curStep.subscribe(function(oldStep) {
-        if (oldStep == -1) return;
+        if (oldStep == -1 || oldStep >= steps.length) return;
         var step = steps[oldStep - 1];
         var line = step.line - 1;
         editor.removeLineClass(line, 'background', 'current-step');
@@ -23,6 +24,19 @@ require([
         var step = steps[newStep - 1];
         var line = step.line - 1;
         editor.addLineClass(line, 'background', 'current-step');
+
+        // TODO show current variable values
+
+        draw.clear();
+        _.each(step.trees, function(root) {
+            draw.drawTree(root);
+        });
+
+        _.each(step.scope, function(value, key) {
+            if (value instanceof tree.TreeNodePointer) {
+                draw.addLabelToNode(key, value.nodeId);
+            }
+        });
     });
     view.numSteps = ko.observable(0);
 
@@ -58,11 +72,13 @@ require([
 
     // Startup
     $(function() {
-        // elements
+        draw.attachToElement($('#tree-container')[0]);
+
         editor = CodeMirror.fromTextArea($('#code-editor')[0], {
             lineNumbers: true,
             mode: 'javascript'
         });
         editor.focus();
+
     });
 });

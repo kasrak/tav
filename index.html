@@ -27,10 +27,17 @@
         </div>
 
         <div class="editor-container">
-            <textarea id="code-editor"></textarea>
+<textarea id="code-editor">
+var root = TreeNode(5);
+root.setLeft(TreeNode(3));
+root.setRight(TreeNode(7));
+var left = root.left;
+left.setRight(TreeNode(10));
+left.setLeft(TreeNode(12));
+</textarea>
         </div>
 
-        <div class="tree-container">
+        <div class="tree-container" id="tree-container">
         </div>
     </body>
 </html>

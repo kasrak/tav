@@ -40,6 +40,19 @@ body {
   position: absolute;
   top: 47px;
   bottom: 0;
-  left: 0;
+  right: 0;
   width: 50%;
+}
+.tree-container text {
+  fill: #fff;
+}
+.tree-container .tree-node {
+  fill: #444;
+}
+.tree-container line {
+  stroke: #777;
+  stroke-width: 3px;
+}
+.tree-container line.duplicate-pointer {
+  stroke: #E62727;
 }

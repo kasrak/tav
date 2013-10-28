@@ -1,10 +1,16 @@
 define(function(require, exports) {
     var _ = require('lodash');
 
+    var lastId = 0;
+
     var TreeNode = function(value, left, right) {
         if (!(this instanceof TreeNode)) {
-            throw new Error('Use "new" to create a TreeNode.');
+            return new TreeNode(value, left, right);
         }
+
+        // immutable and unique id
+        var id = lastId++;
+        this.__id = function() { return id; };
 
         this.value = value;
         this.left = null;
@@ -16,13 +22,21 @@ define(function(require, exports) {
     };
 
     TreeNode.prototype.setLeft = function(node) {
-        node.parent = this;
-        this.left = node;
+        if (node) {
+            node.parent = this;
+            this.left = node;
+        } else {
+            this.left = null;
+        }
     };
 
     TreeNode.prototype.setRight = function(node) {
-        node.parent = this;
-        this.right = node;
+        if (node) {
+            node.parent = this;
+            this.right = node;
+        } else {
+            this.right = null;
+        }
     };
 
     /**
@@ -44,6 +58,43 @@ define(function(require, exports) {
                             buildTree(list[2]));
     };
 
-    exports.TreeNode = window.TreeNode = TreeNode;
+    /**
+     * A FrozenTree represents a tree at an instance in time.
+     * It is created by passing in a TreeNode which is the root
+     * of the tree that needs to be preserved.
+     */
+    var FrozenTree = function(root) {
+        var self = this;
+        this.nodes = {}; // maps original node Ids to the cloned nodes
+
+        var cloneNode = function(node) {
+            if (!node) {
+                return null;
+            }
+
+            if (self.nodes[node.__id()]) {
+                return self.nodes[node.__id()]; // we already cloned this node
+            }
+
+            var clone = new TreeNode(node.value);
+            self.nodes[node.__id()] = clone;
+            clone.setLeft(cloneNode(node.left));
+            clone.setRight(cloneNode(node.right));
+
+            return clone;
+        };
+
+        this.root = cloneNode(root);
+    };
+
+    var TreeNodePointer = function(nodeId) {
+        this.nodeId = nodeId;
+    };
+
+    exports.FrozenTree = FrozenTree;
+    exports.TreeNodePointer = TreeNodePointer;
+
+    // global exports
     exports.buildTree = window.buildTree = buildTree;
+    exports.TreeNode = window.TreeNode = TreeNode;
 });

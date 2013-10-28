@@ -8,14 +8,37 @@ define(function(require, exports) {
     var escope = require('escope');
     var estraverse = require('estraverse');
     var set = require('set');
+    var tree = require('tree');
 
-    // TODO might want to make these global after parsing the input code
+    // TODO might want to make this global after parsing the input code
     // to make sure we don't collide with an identifier in the input.
-    window.__tav_steps = [];
+    var currentRunSteps = [];
     window.__tav_trace = function(line, scope) {
-        window.__tav_steps.push({
+        var treeNodes = {}; // maps variable name to node id
+        var treeRoots = {}; // maps root id to the root node
+
+        _.each(scope, function(value, key) {
+            if (value instanceof tree.TreeNode) {
+                treeNodes[key] = value.__id();
+                scope[key] = new tree.TreeNodePointer(value.__id());
+
+                // find the root of the node
+                var root = value;
+                while (root.parent) root = root.parent;
+                treeRoots[root.__id()] = root;
+            }
+        });
+
+        var trees = [];
+        _.each(treeRoots, function(root) {
+            // freeze each tree
+            trees.push(new tree.FrozenTree(root));
+        });
+
+        currentRunSteps.push({
             line: line,
-            scope: scope
+            scope: scope,
+            trees: trees
         });
     };
 
@@ -72,6 +95,10 @@ define(function(require, exports) {
                 }
             },
             leave: function(node, parent) {
+                if (node.type == 'Program') {
+                    node.body.push(generateTraceNode(node.loc.end.line + 1,
+                        _.pluck(scope.acquire(node).variables, 'name')));
+                }
                 if (scopeTypes.contains(node.type)) {
                     scopeNodes.pop();
                 }
@@ -80,9 +107,9 @@ define(function(require, exports) {
 
         var generatedCode = escodegen.generate(ast);
 
-        window.__tav_steps = [];
+        currentRunSteps = [];
         console.log(generatedCode);
         eval(generatedCode);
-        if (onfinish) onfinish(window.__tav_steps);
+        if (onfinish) onfinish(currentRunSteps);
     };
 });
