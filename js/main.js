@@ -27,8 +27,10 @@ require([
         var line = step.line - 1;
 
         currentLine = editor.getLineHandle(line);
-        editor.addLineClass(currentLine, 'background', 'current-step');
-        editor.scrollIntoView({line: line, ch: 0}, 50 /* margin */);
+        if (currentLine) {
+            editor.addLineClass(currentLine, 'background', 'current-step');
+            editor.scrollIntoView({line: line, ch: 0}, 50 /* margin */);
+        }
 
         // TODO show current variable values
 
