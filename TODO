@@ -1,0 +1,14 @@
+- proper trace calls for `while` and `for` loops
+- drawing of multiple separate trees
+- drawing of multiple variables labels on the same node
+- on code edit, rerun the code and go to the current step (i.e. live updates)
+- show current variable values
+- show syntax errors in the editor
+- allow for simple node.left = assignment (instead of node.setLeft())
+- handle closure scopes
+- step slider (to quickly jump to different steps)
+- allow setting breakpoints in the editor
+- some sort of console to print messages to
+- minify+combine js files for the live site
+- show current call stack when stepping
+- some sort of loading indicator on page load
