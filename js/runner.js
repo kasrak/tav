@@ -59,10 +59,9 @@ define(function(require, exports) {
 
     var controlTypes = set([
         'ExpressionStatement',
-        'ForStatement',
+        'IfStatement',
         'ReturnStatement',
-        'VariableDeclaration',
-        'WhileStatement'
+        'VariableDeclaration'
     ]);
     // TODO special case: loops and conditionals (trace check)
 
@@ -73,32 +72,50 @@ define(function(require, exports) {
         var scope = escope.analyze(ast);
 
         var scopeNodes = [];
+        var curScope;
+        var updateCurScope = function() {
+            // get names of variables in current scope
+            if (scopeNodes.length) {
+                curScope = _.pluck(scope.acquire(_.last(scopeNodes)).variables, 'name');
+            } else {
+                curScope = [];
+            }
+        };
+
         estraverse.traverse(ast, {
             enter: function(node, parent) {
-                var curScope;
                 var nodeIdx;
 
                 if (scopeTypes.contains(node.type)) {
                     scopeNodes.push(node);
+                    updateCurScope();
                 }
 
                 if (controlTypes.contains(node.type) && _.isArray(parent.body)) {
-                    // get names of variables in current scope
-                    curScope = _.pluck(scope.acquire(_.last(scopeNodes)).variables, 'name');
+                    // add trace call before control point
+                    if (!node.loc) {
+                        // if the node doesn't have location info, it's a __tav_trace call
+                        return;
+                    }
 
-                    // add trace call
                     nodeIdx = parent.body.indexOf(node); // xxx perf
                     parent.body.splice(nodeIdx, 0,
+                        generateTraceNode(node.loc.start.line, curScope));
+                } else if (node.type == 'FunctionDeclaration' ||
+                           node.type == 'FunctionExpression') {
+                    node.body.body.splice(0,  0,
                         generateTraceNode(node.loc.start.line, curScope));
                 }
             },
             leave: function(node, parent) {
                 if (node.type == 'Program') {
+                    // special trace call at the end of the program
                     node.body.push(generateTraceNode(node.loc.end.line + 1,
                         _.pluck(scope.acquire(node).variables, 'name')));
                 }
                 if (scopeTypes.contains(node.type)) {
                     scopeNodes.pop();
+                    updateCurScope();
                 }
             }
         });

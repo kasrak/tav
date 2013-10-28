@@ -28,6 +28,7 @@ require([
 
         currentLine = editor.getLineHandle(line);
         editor.addLineClass(currentLine, 'background', 'current-step');
+        editor.scrollIntoView({line: line, ch: 0}, 50 /* margin */);
 
         // TODO show current variable values
 
@@ -79,8 +80,6 @@ require([
     };
 
     ko.applyBindings(view);
-
-    // Tracer
 
     // Startup
     $(function() {

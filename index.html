@@ -39,7 +39,7 @@ function binarySearch(node, value) {
 }
 
 function addNode(tree, value) {
-  if (tree.value < value) {
+  if (tree.value &lt; value) {
     if (tree.right)  {
       addNode(tree.right, value);
     } else {
