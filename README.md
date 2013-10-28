@@ -9,6 +9,7 @@ Thanks to the creators of:
 
 - [acorn.js](https://github.com/marijnh/acorn)
 - [CodeMirror](https://github.com/marijnh/codemirror)
+- [choc](https://github.com/fullstackio/choc) for inspiration
 - [escodegen](https://github.com/Constellation/escodegen)
 - [escope](https://github.com/Constellation/escope)
 - [estraverse](https://github.com/Constellation/estraverse)
