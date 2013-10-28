@@ -58,6 +58,12 @@ define(function(require, exports) {
                             buildTree(list[2]));
     };
 
+    var CloneNode = function(node) {
+        var id = node.__id();
+        this.__id = function() { return id; };
+        this.value = node.value;
+    };
+
     /**
      * A FrozenTree represents a tree at an instance in time.
      * It is created by passing in a TreeNode which is the root
@@ -65,21 +71,23 @@ define(function(require, exports) {
      */
     var FrozenTree = function(root) {
         var self = this;
-        this.nodes = {}; // maps original node Ids to the cloned nodes
+
+        // keep track of nodes we've cloned in case there's a cycle
+        var nodes = {};
 
         var cloneNode = function(node) {
             if (!node) {
                 return null;
             }
 
-            if (self.nodes[node.__id()]) {
-                return self.nodes[node.__id()]; // we already cloned this node
+            if (nodes[node.__id()]) {
+                return nodes[node.__id()]; // we already cloned this node
             }
 
-            var clone = new TreeNode(node.value);
-            self.nodes[node.__id()] = clone;
-            clone.setLeft(cloneNode(node.left));
-            clone.setRight(cloneNode(node.right));
+            var clone = new CloneNode(node);
+            nodes[node.__id()] = clone;
+            clone.left = cloneNode(node.left);
+            clone.right = cloneNode(node.right);
 
             return clone;
         };

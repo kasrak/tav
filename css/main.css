@@ -43,11 +43,14 @@ body {
   right: 0;
   width: 50%;
 }
-.tree-container text {
-  fill: #fff;
-}
 .tree-container .tree-node {
   fill: #444;
+}
+.tree-container text.tree-node {
+  fill: #fff;
+}
+.tree-container text.variable-label {
+  fill: green;
 }
 .tree-container line {
   stroke: #777;

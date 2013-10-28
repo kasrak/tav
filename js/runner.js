@@ -14,12 +14,10 @@ define(function(require, exports) {
     // to make sure we don't collide with an identifier in the input.
     var currentRunSteps = [];
     window.__tav_trace = function(line, scope) {
-        var treeNodes = {}; // maps variable name to node id
         var treeRoots = {}; // maps root id to the root node
 
         _.each(scope, function(value, key) {
             if (value instanceof tree.TreeNode) {
-                treeNodes[key] = value.__id();
                 scope[key] = new tree.TreeNodePointer(value.__id());
 
                 // find the root of the node

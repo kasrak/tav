@@ -11,19 +11,23 @@ require([
     var view = {};
     var steps;
 
+    var currentLine = null;
+
     view.didRun = ko.observable(false);
 
     view.curStep = ko.observable(-1);
     view.curStep.subscribe(function(oldStep) {
-        if (oldStep == -1 || oldStep >= steps.length) return;
-        var step = steps[oldStep - 1];
-        var line = step.line - 1;
-        editor.removeLineClass(line, 'background', 'current-step');
+        if (currentLine) {
+            editor.removeLineClass(currentLine, 'background', 'current-step');
+            currentLine = null;
+        }
     }, null, 'beforeChange');
     view.curStep.subscribe(function(newStep) {
         var step = steps[newStep - 1];
         var line = step.line - 1;
-        editor.addLineClass(line, 'background', 'current-step');
+
+        currentLine = editor.getLineHandle(line);
+        editor.addLineClass(currentLine, 'background', 'current-step');
 
         // TODO show current variable values
 
@@ -42,14 +46,22 @@ require([
 
     view.run = function() {
         var code = editor.getValue();
-        // TODO catch syntax errors
-        runner.run(code, function(_steps) {
-            if (_steps.length === 0) return;
-            steps = _steps;
-            view.didRun(true);
-            view.curStep(1);
-            view.numSteps(steps.length);
-        });
+        try {
+            runner.run(code, function(_steps) {
+                if (_steps.length === 0) return;
+                steps = _steps;
+                view.didRun(true);
+                view.curStep(1);
+                view.numSteps(steps.length);
+            });
+        } catch (e) {
+            if (e instanceof SyntaxError) {
+                // TODO show syntax errors in the editor
+                alert(e);
+            } else {
+                throw e;
+            }
+        }
     };
 
     view.stepNext = function() {
@@ -78,6 +90,17 @@ require([
             lineNumbers: true,
             mode: 'javascript'
         });
+
+        editor.on('change', function() {
+            // hide the Prev/Next buttons for now
+            // TODO automatically re-run the new code up to the current step?
+            view.didRun(false);
+            if (currentLine) {
+                editor.removeLineClass(currentLine, 'background', 'current-step');
+                currentLine = null;
+            }
+        });
+
         editor.focus();
 
     });

@@ -28,12 +28,37 @@
 
         <div class="editor-container">
 <textarea id="code-editor">
-var root = TreeNode(5);
-root.setLeft(TreeNode(3));
-root.setRight(TreeNode(7));
-var left = root.left;
-left.setRight(TreeNode(10));
-left.setLeft(TreeNode(12));
+function binarySearch(node, value) {
+  if (!node || node.value == value) {
+    return node;
+  } else if (node.value < value) {
+    return binarySearch(node.right, value);
+  } else {
+    return binarySearch(node.left, value);
+  }
+}
+
+function addNode(tree, value) {
+  if (tree.value < value) {
+    if (tree.right)  {
+      addNode(tree.right, value);
+    } else {
+      tree.setRight(TreeNode(value));
+    }
+  } else {
+    if (tree.left) {
+      addNode(tree.left, value);
+    } else {
+      tree.setLeft(TreeNode(value));
+    }
+  }
+}
+
+var root = buildTree([10, [5, [2], [7]],
+                          [18, [17], [87]]]);
+
+addNode(root, 75);
+binarySearch(root, 75);
 </textarea>
         </div>
 

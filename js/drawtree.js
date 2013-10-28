@@ -65,7 +65,7 @@ define(function(require, exports) {
             var group = ctx.group();
             drawnNodes[node.__id()] = group;
             group.circle(nodeRadius*2).center(x, y).attr('class', 'tree-node');
-            var label = group.text(String(node.value));
+            var label = group.text(String(node.value)).attr('class', 'tree-node');
             label.font({ size: (fontSize * Math.min(25 / label.bbox().width, 1))});
             label.center(x, y - label.bbox().height / 4);
 
@@ -74,8 +74,19 @@ define(function(require, exports) {
         drawNode(frozenTree.root, 0, viewWidth / 2, 40, null, null);
     };
 
-    exports.addLabelToNode = function(label, nodeId) {
+    exports.addLabelToNode = function(text, nodeId) {
         if (!ctx) throw new Error('Attach to element before drawing');
-        // TODO
+
+        var node = drawnNodes[nodeId];
+        if (!node) throw new Error("Can't add label to node: it doesn't exit");
+
+        var nodeBox = node.bbox();
+
+        var group = ctx.group().attr('class', 'variable-label');
+
+        var label = group.text(text).attr('class', 'variable-label');
+        var labelBox = label.bbox();
+        label.center(nodeBox.x - labelBox.width / 2 - 10,
+                     nodeBox.y + labelBox.height / 3);
     };
 });
