@@ -3,7 +3,7 @@ tree algorithm visualizer
 
 This is an experiment in creating a coding environment in the browser. It's rough right now, but it kind of works.
 
-It lives here: http://www.kasrak.com/tav
+It lives here: http://www.kasrak.com/treevis
 
 Thanks to the creators of:
 
