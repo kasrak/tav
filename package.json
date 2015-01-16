@@ -1,0 +1,38 @@
+{
+  "name": "treevis",
+  "version": "0.0.1",
+  "description": "in-browser binary tree visualizer",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "acorn": "^0.11.0",
+    "escodegen": "^1.6.0",
+    "escope": "^2.0.2",
+    "estraverse": "^1.9.1",
+    "knockout": "^3.2.0",
+    "lodash": "^2.4.1",
+    "webpack": "^1.4.15",
+    "zepto-browserify": "^1.1.3-0"
+  },
+  "devDependencies": {
+    "css-loader": "^0.9.1",
+    "imports-loader": "^0.6.3",
+    "json-loader": "^0.5.1",
+    "jsx-loader": "^0.12.2",
+    "less": "^2.2.0",
+    "less-loader": "^2.0.0",
+    "style-loader": "^0.8.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kasrak/tav.git"
+  },
+  "author": "Kasra Kyanzadeh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kasrak/tav/issues"
+  },
+  "homepage": "https://github.com/kasrak/tav"
+}
