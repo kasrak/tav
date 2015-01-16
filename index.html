@@ -53,11 +53,31 @@ function addNode(tree, value) {
   return tree;
 }
 
+function breadthFirstPrint(tree) {
+  var queue = [tree];
+  var currentNode = null;
+
+  while (queue.length) {
+    var currentNode = queue.shift();
+
+    console.log(currentNode.value);
+
+    if (currentNode.left) {
+      queue.push(currentNode.left);
+    }
+
+    if (currentNode.right) {
+      queue.push(currentNode.right);
+    }
+  }
+}
+
 var root = buildTree([10, [5, [2], [7]],
                           [18, [17], [87]]]);
 
 root = addNode(root, 75);
 binarySearch(root, 75);
+breadthFirstPrint(root);
 </textarea>
         </div>
 
