@@ -35,6 +35,28 @@
 
         <div class="editor-container">
 <textarea id="code-editor">
+/************************************************
+
+Hello! This is a playground for binary trees.
+
+Write JavaScript here, then click the "Run" button
+to step through your code. On the right hand side,
+you'll see any trees that are in scope.
+
+For it to work, you must build your trees using
+the provided TreeNode constructor. You can also
+use the convenience buildTree function. See the
+code below for usage.
+
+Note: this is an alpha version, and a lot of things
+don't work. Notably, only one binary tree at a time
+will be displayed.
+
+The code is on GitHub:
+http://github.com/kasrak/treevis
+
+************************************************/
+
 function binarySearch(node, value) {
   if (!node || node.value == value) {
     return node;
@@ -57,31 +79,11 @@ function addNode(tree, value) {
   return tree;
 }
 
-function breadthFirstPrint(tree) {
-  var queue = [tree];
-  var currentNode = null;
-
-  while (queue.length) {
-    var currentNode = queue.shift();
-
-    console.log(currentNode.value);
-
-    if (currentNode.left) {
-      queue.push(currentNode.left);
-    }
-
-    if (currentNode.right) {
-      queue.push(currentNode.right);
-    }
-  }
-}
-
 var root = buildTree([10, [5, [2], [7]],
                           [18, [17], [87]]]);
 
 root = addNode(root, 75);
 binarySearch(root, 75);
-breadthFirstPrint(root);
 </textarea>
         </div>
 
