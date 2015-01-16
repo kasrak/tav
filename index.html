@@ -22,6 +22,9 @@
                 <button id="step-button" data-bind="click: stepNext">
                     Next
                 </button>
+                <span class="step-slider">
+                    <input type="range" data-bind="value: curStep, attr: { min: 1, max: numSteps }">
+                </span>
                 <span class="step-label">
                     Step <span data-bind="text: curStep"></span>
                     of <span data-bind="text: numSteps"></span>

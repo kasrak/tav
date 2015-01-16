@@ -5,7 +5,6 @@
 - show current variable values
 - show syntax errors in the editor
 - handle closure scopes
-- step slider (to quickly jump to different steps)
 - allow setting breakpoints in the editor
 - some sort of console to print messages to
 - minify+combine js files for the live site
