@@ -7,5 +7,6 @@
 - handle closure scopes
 - allow setting breakpoints in the editor
 - some sort of console to print messages to
-- minify+combine js files for the live site
 - show current call stack when stepping
+- animate transitions between steps
+- support arbitrary graphs
