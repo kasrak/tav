@@ -12,31 +12,41 @@ define(function(require, exports) {
         var id = lastId++;
         this.__id = function() { return id; };
 
+        // private
+        var _left = null;
+        var _right = null;
+
+        // need setters on left/right to update the child's parent field.
+        Object.defineProperties(this, {
+            left: {
+                set: function(left) {
+                    _left = left;
+                    if (left) {
+                        left.parent = this;
+                    }
+                }.bind(this),
+                get: function() {
+                    return _left;
+                }
+            },
+
+            right: {
+                set: function(right) {
+                    _right = right;
+                    if (right) {
+                        right.parent = this;
+                    }
+                }.bind(this),
+                get: function() {
+                    return _right;
+                }
+            },
+        });
+
         this.value = value;
-        this.left = null;
-        this.right = null;
+        this.left = left;
+        this.right = right;
         this.parent = null;
-
-        if (left) this.setLeft(left);
-        if (right) this.setRight(right);
-    };
-
-    TreeNode.prototype.setLeft = function(node) {
-        if (node) {
-            node.parent = this;
-            this.left = node;
-        } else {
-            this.left = null;
-        }
-    };
-
-    TreeNode.prototype.setRight = function(node) {
-        if (node) {
-            node.parent = this;
-            this.right = node;
-        } else {
-            this.right = null;
-        }
     };
 
     /**

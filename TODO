@@ -4,7 +4,6 @@
 - on code edit, rerun the code and go to the current step (i.e. live updates)
 - show current variable values
 - show syntax errors in the editor
-- allow for simple node.left = assignment (instead of node.setLeft())
 - handle closure scopes
 - step slider (to quickly jump to different steps)
 - allow setting breakpoints in the editor

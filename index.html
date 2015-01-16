@@ -42,25 +42,21 @@ function binarySearch(node, value) {
 }
 
 function addNode(tree, value) {
-  if (tree.value &lt; value) {
-    if (tree.right)  {
-      addNode(tree.right, value);
-    } else {
-      tree.setRight(TreeNode(value));
-    }
+  if (!tree) {
+    return TreeNode(value);
+  } else if (tree.value &lt; value) {
+    tree.right = addNode(tree.right, value);
   } else {
-    if (tree.left) {
-      addNode(tree.left, value);
-    } else {
-      tree.setLeft(TreeNode(value));
-    }
+    tree.left = addNode(tree.left, value);
   }
+
+  return tree;
 }
 
 var root = buildTree([10, [5, [2], [7]],
                           [18, [17], [87]]]);
 
-addNode(root, 75);
+root = addNode(root, 75);
 binarySearch(root, 75);
 </textarea>
         </div>
